@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(properties = {
+    "vagai.origem=https://vagai-three.vercel.app, http://localhost:5173",
     "spring.datasource.driver-class-name=org.h2.Driver",
     "spring.datasource.url=jdbc:h2:mem:vagai;MODE=Oracle;DB_CLOSE_DELAY=-1",
     "spring.datasource.username=sa", "spring.datasource.password="})
@@ -55,11 +56,11 @@ class ApiIntegracaoTest {
 
     @Test
     void corsParaReact() throws Exception {
-        for (String origemTeste : List.of("http://localhost:5173", "https://outra.example")) {
+        for (String origemTeste : List.of("http://localhost:5173", "https://vagai-three.vercel.app", "https://outra.example")) {
             var resposta = mvc.perform(options("/usuarios/login").header("Origin", origemTeste)
                     .header("Access-Control-Request-Method", "POST")
                     .header("Access-Control-Request-Headers", "content-type")).andReturn().getResponse();
-            if (origemTeste.equals("http://localhost:5173")) {
+            if (!origemTeste.equals("https://outra.example")) {
                 assertEquals(200, resposta.getStatus());
                 assertEquals(origemTeste, resposta.getHeader("Access-Control-Allow-Origin"));
                 assertEquals("true", resposta.getHeader("Access-Control-Allow-Credentials"));

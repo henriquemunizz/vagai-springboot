@@ -19,7 +19,7 @@ A carga contém 72 inserts fictícios, um UPDATE e um DELETE com WHERE. Restam 7
 | ORACLE_URL | JDBC Thin fornecido pela FIAP, como jdbc:oracle:thin:@//HOST:1521/SERVICO ou no formato SID indicado pela instituição. |
 | ORACLE_USER e ORACLE_PASSWORD | Conta e senha do esquema, configuradas no ambiente. |
 | PORT | Porta HTTP, padrão 8080. |
-| FRONTEND_ORIGIN | Origem exata do frontend, padrão http://localhost:5173, sem barra final. |
+| FRONTEND_ORIGIN | Origens exatas separadas por vírgula, sem barra final. Padrão: http://localhost:5173. |
 | COOKIE_SECURE e COOKIE_SAME_SITE | HTTP local usa false e lax. HTTPS entre sites diferentes usa true e none. |
 
 ## Cadastro e lista
@@ -77,7 +77,7 @@ GET/POST /estacionamentos/{id}/reportes e /avaliacoes. GET /estacionamentos/{id}
 
 ## React e Postman
 
-No React, envie `credentials: "include"` no login e nas chamadas autenticadas. O cookie de sessão é HttpOnly. O login renova a sessão. A origem do navegador precisa corresponder a FRONTEND_ORIGIN.
+No React, envie `credentials: "include"` no login e nas chamadas autenticadas. O cookie de sessão é HttpOnly. O login renova a sessão. Para acessar a mesma API publicada pelo site e pelo Vite local, configure FRONTEND_ORIGIN=https://vagai-three.vercel.app,http://localhost:5173 no Render.
 
 Importe a coleção no Postman, preencha baseUrl, nome e senha e mantenha o cookie jar habilitado. O Runner captura IDs e demonstra CRUD, conflitos, 400 e 404. Use um nome novo para cada execução completa.
 

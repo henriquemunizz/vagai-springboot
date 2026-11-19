@@ -28,13 +28,20 @@ public class CorsFilter extends org.springframework.web.filter.CorsFilter {
         });
     }
 
-    private static UrlBasedCorsConfigurationSource configurar(String origem) {
+    private static void validarOrigem(String origem) {
         URI uri = URI.create(origem);
         if (uri.getHost() == null || !java.util.Set.of("https", "http").contains(uri.getScheme())
                 || !uri.getRawPath().isEmpty() || uri.getRawQuery() != null || uri.getRawFragment() != null
                 || uri.getUserInfo() != null) throw new IllegalArgumentException("FRONTEND_ORIGIN inválida");
+    }
+
+    private static UrlBasedCorsConfigurationSource configurar(String origens) {
         CorsConfiguration regras = new CorsConfiguration();
-        regras.setAllowedOrigins(List.of(origem));
+        for (String valor : origens.split(",", -1)) {
+            String origem = valor.strip();
+            validarOrigem(origem);
+            regras.addAllowedOrigin(origem);
+        }
         regras.setAllowCredentials(true);
         regras.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         regras.setAllowedHeaders(List.of("Content-Type", "Accept"));
